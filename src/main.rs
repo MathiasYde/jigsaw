@@ -4,6 +4,8 @@ use std::collections::HashMap;
 use gloo_timers::future::TimeoutFuture;
 use wasm_bindgen_futures::spawn_local;
 
+const TRANSITION_DURATION: u32 = 200;
+
 fn solve(mut pieces: Vec<u32>) -> Vec<Vec<u32>> {
     let mapping: HashMap<u32, u32> = pieces.iter().enumerate().map(|(i, &p)| (i as u32, p)).collect();
     let mut circles = vec![];
@@ -94,9 +96,9 @@ impl Component for App {
                             if let [a, b] = window {
                                 link.send_message(AppMessage::Swap(*a, *b));
                             }
-                            TimeoutFuture::new(400).await;
+                            TimeoutFuture::new(TRANSITION_DURATION).await;
                         }
-                        TimeoutFuture::new(1200).await;
+                        TimeoutFuture::new(TRANSITION_DURATION * 2).await;
                     }
 
                 });
@@ -150,7 +152,7 @@ impl Component for App {
                             html! {
                                 <button
                                     onclick=self.link.callback(move |_| Self::Message::Click(index as u32)) 
-                                    style={"transition: all 400ms ease-in-out"}
+                                    style={format!("transition: all {TRANSITION_DURATION}ms ease-in-out")}
                                     class={
                                         format!("absolute overflow-hidden aspect-square w-[{}%] left-[{:.8}%] top-[{}%] scale-none {}",
                                             100f64 / (self.size as f64),
