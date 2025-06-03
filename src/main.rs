@@ -57,7 +57,7 @@ impl Component for App {
     type Properties = ();
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let size = 20_u32;
+        let size = 6_u32;
         Self {
             current: None,
             link: link,
